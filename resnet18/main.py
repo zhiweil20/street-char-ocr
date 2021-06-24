@@ -1,5 +1,7 @@
 import os, sys, glob, shutil, json
 
+from torchvision.transforms.transforms import ColorJitter
+
 os.environ["CUDA_VISIBLE_DEVICES"] = '0'
 import cv2
 
@@ -55,7 +57,9 @@ print(len(train_path), len(train_label))
 train_loader = torch.utils.data.DataLoader(
     SVHNDataset(train_path, train_label,
                 transforms.Compose([
-                    transforms.Resize((60, 120)),
+                    transforms.Resize((64, 128)),
+                    transforms.ColorJitter(0.2, 0.2, 0.2),
+                    transforms.RandomRotation(5),
                     transforms.ToTensor(),
                     transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
                 ])
@@ -225,4 +229,4 @@ for epoch in range(2):
 
     if val_loss < best_loss:
         best_loss = val_loss
-        torch.save(model.state_dict(), './model.pt')
+        torch.save(model.state_dict(), './model.pth')

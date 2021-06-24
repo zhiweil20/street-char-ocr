@@ -1,2 +1,4 @@
 input/*
 .DS_Store
+
+resnet18/model.pth
